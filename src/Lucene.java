@@ -88,16 +88,15 @@ public class Lucene {
 		return doc;
 	}
 	
-	public void search() {
+	public void search(String field, String queryStr, int number) {
 		File f = new File(indexPath);
 		try {
 			IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(f)));
-			String queryStr = "and";
 			Analyzer analyzer = new IKAnalyzer();
-			QueryParser parser = new QueryParser("title", analyzer);
+			QueryParser parser = new QueryParser(field, analyzer);
 			
 			Query query = parser.parse(queryStr);
-			TopDocs hits = searcher.search(query, 50);
+			TopDocs hits = searcher.search(query, number);
 			for(ScoreDoc doc: hits.scoreDocs){
 				Document d = searcher.doc(doc.doc);
 				System.out.println(d.get("title"));
