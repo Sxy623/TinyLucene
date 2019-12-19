@@ -88,7 +88,7 @@ public class Lucene {
 		return doc;
 	}
 	
-	public void search(String field, String queryStr, int number) {
+	public String[][] search(String field, String queryStr, int number) {
 		File f = new File(indexPath);
 		try {
 			IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(f)));
@@ -97,15 +97,22 @@ public class Lucene {
 			
 			Query query = parser.parse(queryStr);
 			TopDocs hits = searcher.search(query, number);
-			for(ScoreDoc doc: hits.scoreDocs){
+			System.out.println(hits.scoreDocs.length);
+			String[][] result = new String[number][2];
+			int index = 0;
+			for(ScoreDoc doc: hits.scoreDocs) {
 				Document d = searcher.doc(doc.doc);
-				System.out.println(d.get("title"));
-				System.out.println(d.get("url"));
+				result[index][0] = d.get("title");
+				result[index][1] = d.get("url");
+				index++;
 			}
+			System.out.println(index);
+			return result;
 		}
 		catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 }

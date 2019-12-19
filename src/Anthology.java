@@ -23,7 +23,6 @@ public class Anthology {
 					
 					line = line.trim();
 					int length = line.length();
-//					System.out.println(line);
 					
 					if (line.startsWith("@inproceedings")) continue;
 					
