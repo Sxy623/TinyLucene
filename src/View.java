@@ -43,6 +43,7 @@ public class View extends JFrame {
 		// Button
 		JButton button = new JButton("Search");
 		button.setBounds(630, 80, 140, 30);
+		// Search and refresh the table when button pressed
 		button.addActionListener(new ActionListener() {		
 			public void actionPerformed(ActionEvent arg0) {
 				String query = textField.getText().trim();

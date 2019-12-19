@@ -7,17 +7,25 @@ public class Anthology {
 	
 	public void analyzeFile(String path) {
 		try {
+			// Open the file and convert to bytes
 			FileInputStream file = new FileInputStream(path);
 			int fileLength = file.available();
 			byte[] bytes = new byte[fileLength];
 			file.read(bytes);
 			file.close();
+			
+			// Convert to string
 			String content = new String(bytes);
+			
+			// Split the papers
 			String[] papers = content.split("}\n");
+			
 			int index = 0;
 			for (String s: papers) {
 				paperInfos[index] = new PaperInfo();
 				paperInfos[index].index = index;
+				
+				// Split the lines
 				String[] lines = s.split("\n");
 				for (String line: lines) {
 					
@@ -26,6 +34,7 @@ public class Anthology {
 					
 					if (line.startsWith("@inproceedings")) continue;
 					
+					// Store the contents of fields
 					if (line.startsWith("title")) {
 						paperInfos[index].title = line.substring(9, length - 2);
 					}
@@ -67,6 +76,8 @@ public class Anthology {
 				}
 				index++;
 			}
+			
+			// Record total number of the papers
 			number = index;
 		} 
 		catch (Exception e) {

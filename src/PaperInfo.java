@@ -10,6 +10,7 @@ public class PaperInfo {
 	public String publisher;
 	public String url;
 	public String pages;
+	public String abs;
 	
 	public void print() {
 		System.out.println("index: " + index);

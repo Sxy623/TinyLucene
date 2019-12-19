@@ -47,7 +47,11 @@ public class Lucene {
 	}
 	
 	public Document getDocument(PaperInfo info) {
+		
+		// Create the document
 		Document doc = new Document();
+		
+		// Add fields
 		Field field = null;
 		if (info.title != null) {
 			field = new TextField("title", info.title, Field.Store.YES);
@@ -97,16 +101,17 @@ public class Lucene {
 			
 			Query query = parser.parse(queryStr);
 			TopDocs hits = searcher.search(query, number);
-			System.out.println(hits.scoreDocs.length);
 			String[][] result = new String[number][2];
 			int index = 0;
+			
+			// Store the results
 			for(ScoreDoc doc: hits.scoreDocs) {
 				Document d = searcher.doc(doc.doc);
 				result[index][0] = d.get("title");
 				result[index][1] = d.get("url");
 				index++;
 			}
-			System.out.println(index);
+			
 			return result;
 		}
 		catch (IOException | ParseException e) {
