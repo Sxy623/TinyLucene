@@ -64,9 +64,16 @@ public class Main {
 					// Venue
 					e = doc.getElementsByTag("dl");
 					if (e.hasText()) {
-						int s = e.text().indexOf("Venues:");
-						int t = e.text().indexOf("SIG:");
-						anthology.paperInfos[index].venue = e.text().substring(s + 8, t);
+						int s = e.text().indexOf("Venue:");
+						if (s == -1) {
+							s = e.text().indexOf("Venues:");
+							s += 8;
+						}
+						else {
+							s += 7;
+						}
+						int t = e.text().indexOf("SIG");
+						anthology.paperInfos[index].venue = e.text().substring(s, t);
 						System.out.println("Venue: " + anthology.paperInfos[index].venue);
 					}
 					
