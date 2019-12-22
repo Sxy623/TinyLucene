@@ -11,6 +11,7 @@ public class PaperInfo {
 	public String url;
 	public String pages;
 	public String abs;
+	public String venue;
 	
 	public void print() {
 		System.out.println("index: " + index);
@@ -23,5 +24,7 @@ public class PaperInfo {
 		System.out.println("publisher: " + publisher);
 		System.out.println("url: " + url);
 		System.out.println("pages: " + pages);
+		System.out.println("abstract: " + abs);
+		System.out.println("venue: " + venue);
 	}
 }

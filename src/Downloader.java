@@ -43,6 +43,7 @@ public class Downloader {
 		if (inputStream != null) {
 			inputStream.close();
 		}
+		
 		System.out.println("Info: " + fileName + " download success");
 	}
 }
