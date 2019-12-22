@@ -89,6 +89,14 @@ public class Lucene {
 			field = new TextField("pages", info.pages, Field.Store.YES);
 			doc.add(field);
 		}
+		if (info.abs != null) {
+			field = new TextField("abstract", info.abs, Field.Store.YES);
+			doc.add(field);
+		}
+		if (info.venue != null) {
+			field = new TextField("venue", info.venue, Field.Store.YES);
+			doc.add(field);
+		}
 		return doc;
 	}
 	

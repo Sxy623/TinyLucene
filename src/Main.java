@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.util.Scanner;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -13,19 +17,34 @@ public class Main {
 			anthology.analyzeFile(anthologyPath);
 			
 			// Download pdf files
-			String dirPath = "data";
-			for (int index = 20640; index <= 21000; index++) {
-				if (anthology.paperInfos[index - 1].url == null) continue;
-				String url = anthology.paperInfos[index - 1].url;
-				if (!url.endsWith(".pdf")) {
-					url += ".pdf";
+//			String dirPath = "data";
+//			for (int index = 20640; index <= 21000; index++) {
+//				if (anthology.paperInfos[index - 1].url == null) continue;
+//				String url = anthology.paperInfos[index - 1].url;
+//				if (!url.endsWith(".pdf")) {
+//					url += ".pdf";
+//				}
+//				String fileName = String.valueOf(index) + ".pdf";
+//				Downloader.downloadByUrl(url, fileName, dirPath);
+//			}
+			
+			// Recovery from file
+			String infoPath = "info";
+			File file = new File(infoPath);
+			int start = 0;
+			if (file.isFile() && file.exists()) {
+				Scanner scan = new Scanner(file);
+				while (scan.hasNext()) {
+					anthology.paperInfos[start].abs = scan.nextLine();
+					anthology.paperInfos[start].venue = scan.nextLine();
+					start++;
 				}
-				String fileName = String.valueOf(index) + ".pdf";
-				Downloader.downloadByUrl(url, fileName, dirPath);
+				scan.close();
 			}
 			
+			FileWriter writer = new FileWriter(file, true);
 			// Crawl data
-			for (int index = 280; index < anthology.number; index++) {
+			for (int index = start; index < anthology.number; index++) {
 				try {
 					System.out.println("Processing Paper No." + (index + 1) + "...");
 					if (anthology.paperInfos[index].url == null) {
@@ -51,6 +70,15 @@ public class Main {
 						System.out.println("Venue: " + anthology.paperInfos[index].venue);
 					}
 					
+					if (anthology.paperInfos[index].abs != null) {
+						writer.write(anthology.paperInfos[index].abs);
+					}
+					writer.write("\n");
+					if (anthology.paperInfos[index].venue != null) {
+						writer.write(anthology.paperInfos[index].venue);
+					}
+					writer.write("\n");
+					writer.flush();
 					System.out.println("Success!");
 				}
 				catch (Exception e) {
@@ -58,6 +86,7 @@ public class Main {
 				}
 				System.out.println();
 			}
+			writer.close();
 			
 			// Create the index
 			String indexPath = "index";
