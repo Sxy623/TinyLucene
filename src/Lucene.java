@@ -109,18 +109,38 @@ public class Lucene {
 			
 			Query query = parser.parse(queryStr);
 			TopDocs hits = searcher.search(query, number);
-			String[][] result = new String[number][2];
-			int index = 0;
 			
-			// Store the results
-			for(ScoreDoc doc: hits.scoreDocs) {
-				Document d = searcher.doc(doc.doc);
-				result[index][0] = d.get("title");
-				result[index][1] = d.get("url");
-				index++;
+			if (field == "title" || field == "abstract") {
+				String[][] result = new String[number][2];
+				int index = 0;
+				
+				// Store the results
+				for(ScoreDoc doc: hits.scoreDocs) {
+					Document d = searcher.doc(doc.doc);
+					result[index][0] = d.get("title");
+					result[index][1] = d.get("url");
+					index++;
+				}
+				
+				return result;
+			}
+			else {
+				String[][] result = new String[number][3];
+				int index = 0;
+				
+				// Store the results
+				for(ScoreDoc doc: hits.scoreDocs) {
+					Document d = searcher.doc(doc.doc);
+					result[index][0] = d.get("title");
+					result[index][1] = d.get(field);
+					result[index][2] = d.get("url");
+					index++;
+				}
+				
+				return result;
 			}
 			
-			return result;
+			
 		}
 		catch (IOException | ParseException e) {
 			e.printStackTrace();

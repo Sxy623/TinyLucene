@@ -17,16 +17,16 @@ public class Main {
 			anthology.analyzeFile(anthologyPath);
 			
 			// Download pdf files
-//			String dirPath = "data";
-//			for (int index = 20640; index <= 21000; index++) {
-//				if (anthology.paperInfos[index - 1].url == null) continue;
-//				String url = anthology.paperInfos[index - 1].url;
-//				if (!url.endsWith(".pdf")) {
-//					url += ".pdf";
-//				}
-//				String fileName = String.valueOf(index) + ".pdf";
-//				Downloader.downloadByUrl(url, fileName, dirPath);
-//			}
+			String dirPath = "data";
+			for (int index = 20501; index <= 21000; index++) {
+				if (anthology.paperInfos[index - 1].url == null) continue;
+				String url = anthology.paperInfos[index - 1].url;
+				if (!url.endsWith(".pdf")) {
+					url += ".pdf";
+				}
+				String fileName = String.valueOf(index) + ".pdf";
+				Downloader.downloadByUrl(url, fileName, dirPath);
+			}
 			
 			// Recovery from file
 			String infoPath = "info";
@@ -42,13 +42,15 @@ public class Main {
 				scan.close();
 			}
 			
-			FileWriter writer = new FileWriter(file, true);
 			// Crawl data
+			FileWriter writer = new FileWriter(file, true);
 			for (int index = start; index < anthology.number; index++) {
 				try {
 					System.out.println("Processing Paper No." + (index + 1) + "...");
 					if (anthology.paperInfos[index].url == null) {
+						writer.write("\n\n");
 						System.out.println("No URL!");
+						System.out.println();
 						continue;
 					}
 				
@@ -89,6 +91,7 @@ public class Main {
 					System.out.println("Success!");
 				}
 				catch (Exception e) {
+					writer.write("\n\n");
 					System.out.println("Fail!");
 				}
 				System.out.println();
@@ -98,7 +101,8 @@ public class Main {
 			// Create the index
 			String indexPath = "index";
 			Lucene lucene = new Lucene(indexPath, anthology);
-			lucene.createIndex();
+			File indexFile = new File(indexPath);
+			if (!indexFile.exists()) lucene.createIndex();
 			
 			// Show GUI
 			new View(lucene);

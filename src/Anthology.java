@@ -36,7 +36,7 @@ public class Anthology {
 					
 					// Store the contents of fields
 					if (line.startsWith("title")) {
-						paperInfos[index].title = line.substring(9, length - 2);
+						paperInfos[index].title = line.substring(9, length - 2).replaceAll("[{}]", "");
 					}
 					else if (line.startsWith("author")) {
 						if (line.indexOf('"') != line.lastIndexOf('"')) {
